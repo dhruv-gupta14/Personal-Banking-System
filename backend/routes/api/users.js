@@ -70,7 +70,8 @@ router.post("/login", (req, res) => {
         const token = jwt.sign(payload, keys.secretOrKey, {
           expiresIn: 31556926,
         });
-        //console.log(token);
+        console.log(token);
+        res.status(200).send({ user, token });
       } else
         return res
           .status(400)

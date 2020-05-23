@@ -29,11 +29,11 @@ const registerValidation = (data) => {
     errors.password = "Password must be at least 6 characters";
   }
 
-  if (Validator.validate(data)) {
-    if (data.toLowerCase().includes("password")) {
-      errors.password = 'Password cannot contain "password"';
-    }
-  }
+  // if (Validator.validate(data)) {
+  //   if (data.toLowerCase().includes("password")) {
+  //     errors.password = 'Password cannot contain "password"';
+  //   }
+  // }
 
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
