@@ -50,8 +50,8 @@ class Dashboard extends Component {
                     "btn btn-large waves-effect waves-light hoverable blue accent-3 main-btn",
                 }}
                 plaidLinkProps={{
-                  clientName: "YOUR_APP_NAME",
-                  key: "YOUR_PUBLIC_KEY",
+                  clientName: "Personal Banking System",
+                  key: "a8678d216f3e80445c1e99df7c34fc",
                   env: "sandbox",
                   product: ["transactions"],
                   onSuccess: this.handleOnSuccess,
