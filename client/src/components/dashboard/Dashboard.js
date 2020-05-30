@@ -5,29 +5,30 @@ import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { getAccounts, addAccount } from "../../actions/accountActions";
 import Accounts from "./Accounts";
+import Spinner from "./Spinner";
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getAccounts();
   }
-// Logout
-  onLogoutClick = e => {
+  // Logout
+  onLogoutClick = (e) => {
     e.preventDefault();
     this.props.logoutUser();
   };
-// Add account
+  // Add account
   handleOnSuccess = (token, metadata) => {
     const plaidData = {
       public_token: token,
-      metadata: metadata
+      metadata: metadata,
     };
-this.props.addAccount(plaidData);
+    this.props.addAccount(plaidData);
   };
-render() {
+  render() {
     const { user } = this.props.auth;
     const { accounts, accountsLoading } = this.props.plaid;
-let dashboardContent;
-if (accounts === null || accountsLoading) {
-      dashboardContent = <p className="center-align">Loading...</p>;
+    let dashboardContent;
+    if (accounts === null || accountsLoading) {
+      dashboardContent = <Spinner />;
     } else if (accounts.length > 0) {
       // User has accounts linked
       dashboardContent = <Accounts user={user} accounts={accounts} />;
@@ -46,14 +47,14 @@ if (accounts === null || accountsLoading) {
               <PlaidLinkButton
                 buttonProps={{
                   className:
-                    "btn btn-large waves-effect waves-light hoverable blue accent-3 main-btn"
+                    "btn btn-large waves-effect waves-light hoverable blue accent-3 main-btn",
                 }}
                 plaidLinkProps={{
-                  clientName: "Personal-Banking-App",
-                  key:"a8678d216f3e80445c1e99df7c34fc" ,
+                  clientName: "YOUR_APP_NAME",
+                  key: "YOUR_PUBLIC_KEY",
                   env: "sandbox",
                   product: ["transactions"],
-                  onSuccess: this.handleOnSuccess
+                  onSuccess: this.handleOnSuccess,
                 }}
                 onScriptLoad={() => this.setState({ loaded: true })}
               >
@@ -70,7 +71,7 @@ if (accounts === null || accountsLoading) {
         </div>
       );
     }
-return <div className="container">{dashboardContent}</div>;
+    return <div className="container">{dashboardContent}</div>;
   }
 }
 Dashboard.propTypes = {
@@ -78,13 +79,14 @@ Dashboard.propTypes = {
   getAccounts: PropTypes.func.isRequired,
   addAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  plaid: PropTypes.object.isRequired
+  plaid: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
-  plaid: state.plaid
+  plaid: state.plaid,
 });
-export default connect(
-  mapStateToProps,
-  { logoutUser, getAccounts, addAccount }
-)(Dashboard);
+export default connect(mapStateToProps, {
+  logoutUser,
+  getAccounts,
+  addAccount,
+})(Dashboard);
