@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const AccountSchema = new Schema({
   userId: {
-    type: Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId, // how we associate each account with a user
     ref: "users"
   },
   accessToken: {
@@ -30,4 +31,5 @@ const AccountSchema = new Schema({
     type: String
   }
 });
+
 module.exports = Account = mongoose.model("account", AccountSchema);

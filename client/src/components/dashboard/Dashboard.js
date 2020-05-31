@@ -4,29 +4,37 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { getAccounts, addAccount } from "../../actions/accountActions";
+
 import Accounts from "./Accounts";
 import Spinner from "./Spinner";
+
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getAccounts();
   }
+
   // Logout
-  onLogoutClick = (e) => {
+  onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
+
   // Add account
   handleOnSuccess = (token, metadata) => {
     const plaidData = {
       public_token: token,
-      metadata: metadata,
+      metadata: metadata
     };
+
     this.props.addAccount(plaidData);
   };
+
   render() {
     const { user } = this.props.auth;
     const { accounts, accountsLoading } = this.props.plaid;
+
     let dashboardContent;
+
     if (accounts === null || accountsLoading) {
       dashboardContent = <Spinner />;
     } else if (accounts.length > 0) {
@@ -47,14 +55,14 @@ class Dashboard extends Component {
               <PlaidLinkButton
                 buttonProps={{
                   className:
-                    "btn btn-large waves-effect waves-light hoverable blue accent-3 main-btn",
+                    "btn btn-large waves-effect waves-light hoverable blue accent-3 main-btn"
                 }}
                 plaidLinkProps={{
                   clientName: "Personal Banking System",
-                  key: "a8678d216f3e80445c1e99df7c34fc",
+                  key: "713245120501ecb0bb6e1a29b1f5e0",
                   env: "sandbox",
                   product: ["transactions"],
-                  onSuccess: this.handleOnSuccess,
+                  onSuccess: this.handleOnSuccess
                 }}
                 onScriptLoad={() => this.setState({ loaded: true })}
               >
@@ -71,22 +79,25 @@ class Dashboard extends Component {
         </div>
       );
     }
+
     return <div className="container">{dashboardContent}</div>;
   }
 }
+
 Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   getAccounts: PropTypes.func.isRequired,
   addAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  plaid: PropTypes.object.isRequired,
+  plaid: PropTypes.object.isRequired
 };
-const mapStateToProps = (state) => ({
+
+const mapStateToProps = state => ({
   auth: state.auth,
-  plaid: state.plaid,
+  plaid: state.plaid
 });
-export default connect(mapStateToProps, {
-  logoutUser,
-  getAccounts,
-  addAccount,
-})(Dashboard);
+
+export default connect(
+  mapStateToProps,
+  { logoutUser, getAccounts, addAccount }
+)(Dashboard);
